@@ -1,0 +1,78 @@
+<?php
+// This file is part of the File Trash report by Barry Oosthuizen - http://elearningstudio.co.uk
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+require_once('../../config.php');
+require_once($CFG->dirroot . '/report/filetrash/lib.php');
+
+$filename = optional_param('filename', '0', PARAM_TEXT);
+$filepath = optional_param('filepath', '0', PARAM_TEXT);
+
+require_login();
+
+$context = context_system::instance();
+require_capability('report/filetrash:view', $context);
+
+$path = $filepath . '/' . $filename;
+
+if (!is_file($path)) {
+    // File does not exist.
+    echo get_string('doesnotexist', 'report_filetrash');
+    exit();
+}
+
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mime = finfo_file($finfo, $path);
+
+header('Content-Type: ' . $mime);
+header('Content-Length: ' . filesize($path));
+
+header("Cache-Control: private");
+
+header("Content-Disposition: attachment; filename=" . $filename);
+readfile_chunked($path);
+
+/**
+ * readfile_chunked
+ * 
+ * read file chunk by chunk
+ * 
+ * @param string $filename
+ * @param boolean $retbytes
+ * @return boolean
+ */
+function readfile_chunked($filename, $retbytes = true) {
+    $chunksize = 1 * (1024 * 1024);
+    $buffer = '';
+    $cnt = 0;
+    $handle = fopen($filename, 'rb');
+    if ($handle === false) {
+        return false;
+    }
+    while (!feof($handle)) {
+        $buffer = fread($handle, $chunksize);
+        echo $buffer;
+        ob_flush();
+        flush();
+        if ($retbytes) {
+            $cnt += strlen($buffer);
+        }
+    }
+    $status = fclose($handle);
+    if ($retbytes && $status) {
+        return $cnt;
+    }
+    return $status;
+}
