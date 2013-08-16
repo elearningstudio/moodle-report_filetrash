@@ -29,6 +29,7 @@ $string['pluginname'] = 'File trash';
 $string['doesnotexist'] = 'This file does not exist.';
 $string['confirm_delete'] = 'Are you sure you want to delete the file(s) listed below?';
 $string['deleted'] = 'The files you selected have been deleted successfully.';
+$string['deletedfailed'] = 'There was a problem deleting the following files: ';
 $string['nofiles'] = 'There are no orphaned files in the filedir directory of your moodledata folder';
 $string['directory'] = 'Directory: ';
 $string['extension'] = 'File type: ';

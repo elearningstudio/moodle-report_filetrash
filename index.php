@@ -58,8 +58,15 @@ $customdata = array('orphanedfiles' => $report->orphanedfiles);
 $form = new report_filetrash_form(null, $customdata);
 
 if ($confirmdelete == 'yes') {
-    $form->process($cacheid);
-    echo html_writer::tag('p', get_string('deleted', 'report_filetrash'));
+    $errors = $form->process($cacheid);
+    if (count($errors) > 0) {
+        echo html_writer::tag('p', get_string('deletedfailed', 'report_filetrash'));
+        foreach ($errors as $key => $error) {
+            echo html_writer::tag('p', $error);
+        }
+    } else {
+        echo html_writer::tag('p', get_string('deleted', 'report_filetrash'));
+    }
     $continueurl = new moodle_url('/report/filetrash/index.php', array('id' => $course->id));
     $link = html_writer::link($continueurl, get_string('continue'));
     echo html_writer::tag('p', $link);
