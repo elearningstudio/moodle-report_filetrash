@@ -89,7 +89,7 @@ class report_filetrash_form extends moodleform {
             $key = $indexedfiles[$delete];
             $filename = $key['filename'];
             $filepath = $key['filepath'];
-            $path = $filepath . '\\' . $filename;
+            $path = $filepath . '/' . $filename;
             $files[] = $path;
         }
 
@@ -117,12 +117,16 @@ class report_filetrash_form extends moodleform {
             'id' => $id));
 
         $filestodelete = unserialize($cachedrecord->filestodelete);
-
+        $errors = array();
         foreach ($filestodelete as $key => $path) {
-            unlink($path);
+            $deleted = unlink($path);
+            if (!$deleted) {
+                $errors[] = $path;
+            }
         }
         $cachedrecord->deleted = 1;
         $DB->update_record('report_filetrash', $cachedrecord);
+        return $errors;
     }
 
 }

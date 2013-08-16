@@ -26,7 +26,7 @@ $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
 require_login($course);
 
-$path = $filepath . '\\' . $filename;
+$path = $filepath . '/' . $filename;
 
 $parts = explode('/', pathinfo($path, PATHINFO_DIRNAME));
 
