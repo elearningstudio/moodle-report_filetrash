@@ -55,7 +55,8 @@ class report_filetrash_form extends moodleform {
                 $filesize = $file['filesize'];
                 $extension = $file['extension'];
 
-                $link = new moodle_url('/report/filetrash/file.php', array('filepath' => $filepath, 'filename' => $filename));
+                $link = new moodle_url('/report/filetrash/file.php',
+                        array('filepath' => $filepath, 'filename' => $filename));
                 $filelink = html_writer::link($link, $filename);
                 $header = html_writer::div($directory . $filepath);
                 $body = html_writer::div($name . $filelink);
@@ -72,6 +73,15 @@ class report_filetrash_form extends moodleform {
         }
     }
 
+    /**
+     * store_options
+     * 
+     * Store selected options (files to delete) in the database
+     * 
+     * @param object $data
+     * @param array $indexedfiles
+     * @return object $success
+     */
     public function store_options($data, $indexedfiles) {
         global $DB, $USER;
 
@@ -105,6 +115,14 @@ class report_filetrash_form extends moodleform {
         return $success;
     }
 
+    /**
+     * process
+     * 
+     * Delete selected files form their directories
+     * 
+     * @param string $id id field from options stored in the database
+     * @return array $errors list of files that failed to be deleted
+     */
     public function process($id) {
         global $DB, $USER;
 

@@ -23,20 +23,18 @@
  * @copyright  2013 Barry Oosthuizen
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require('../../config.php');
+require_once('../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot . '/report/filetrash/lib.php');
 require_once($CFG->dirroot . '/report/filetrash/form.php');
 
-$id = optional_param('id', $SITE->id, PARAM_INT);
 $cacheid = optional_param('cacheid', $SITE->id, PARAM_INT);
 $confirmdelete = optional_param('confirmdelete', null, PARAM_TEXT);
-$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
-require_login($course);
-
-$context = context_course::instance($course->id);
+require_login();
+$context = context_system::instance();
 require_capability('report/filetrash:view', $context);
+
 $filetrash = get_string('pluginname', 'report_filetrash');
 
 session_get_instance()->write_close();

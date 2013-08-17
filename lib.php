@@ -49,7 +49,7 @@ class report_filetrash {
     public $directoryfiles;
     public $backupfiles;
     public $orphanedfiles;
-
+    
     public function __construct() {
 
         $this->dbfiles = $this->get_current_files();
@@ -58,6 +58,14 @@ class report_filetrash {
         $this->orphanedfiles = $this->get_orphaned_files();
     }
 
+    /**
+     * get_size_format
+     * 
+     * Add a size format (e.g. bytes, MB, GB, etc) as suffix
+     * 
+     * @param type $bytes
+     * @return string
+     */
     public static function get_size_format($bytes) {
         if ($bytes >= 1073741824) {
             $bytes = number_format($bytes / 1073741824, 2) .
@@ -79,6 +87,14 @@ class report_filetrash {
         return $bytes;
     }
 
+    /**
+     * get_files
+     * 
+     * Get a list of files within a specific directory and all it's sub directories
+     * 
+     * @param string $directory
+     * @return array $filenames
+     */
     public static function get_files($directory) {
         $iterator = new RecursiveIteratorIterator(
                         new RecursiveDirectoryIterator($directory), RecursiveIteratorIterator::CHILD_FIRST);
@@ -99,10 +115,16 @@ class report_filetrash {
                     'extension' => $mime);
             }
         }
-
         return $filenames;
     }
 
+    /**
+     * get_directory_files
+     * 
+     * Get a list of files from the moodledata directory
+     * 
+     * @return array $files
+     */
     public function get_directory_files() {
         global $CFG;
 
@@ -111,6 +133,13 @@ class report_filetrash {
         return $files;
     }
 
+    /**
+     * get_backup_files
+     * 
+     * Get a list of files from the backup directory if defined
+     * 
+     * @return array $files
+     */
     public function get_backup_files() {
         global $CFG;
 
@@ -125,6 +154,13 @@ class report_filetrash {
         }
     }
 
+    /**
+     * get_current_files
+     * 
+     * Get a list of files referenced in the files database table
+     * 
+     * @return array $files
+     */
     public function get_current_files() {
         global $DB;
 
@@ -134,10 +170,17 @@ class report_filetrash {
             $filename = $file->contenthash;
             $files[$filename] = array('filename' => $filename);
         }
-
         return $files;
     }
 
+    /**
+     * get_orphaned_files
+     * 
+     * Get a list of orpaned files by finding the difference of files in the directory
+     * vs files referenced in the database
+     * 
+     * @return array $indexedorphans
+     */
     public function get_orphaned_files() {
         $indexedorphans = array();
         $currentfiles = array_merge($this->directoryfiles, $this->backupfiles);

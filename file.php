@@ -15,21 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once('../../config.php');
-
 require_once($CFG->dirroot . '/report/filetrash/lib.php');
 
-$id = optional_param('id', $SITE->id, PARAM_INT);
 $filename = optional_param('filename', '0', PARAM_TEXT);
 $filepath = optional_param('filepath', '0', PARAM_TEXT);
 
-$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
+require_login();
 
-require_login($course);
+$context = context_system::instance();
+require_capability('report/filetrash:view', $context);
 
 $path = $filepath . '/' . $filename;
-
-$parts = explode('/', pathinfo($path, PATHINFO_DIRNAME));
-
 
 if (!is_file($path)) {
     // File does not exist.
@@ -48,6 +44,15 @@ header("Cache-Control: private");
 header("Content-Disposition: attachment; filename=" . $filename);
 readfile_chunked($path);
 
+/**
+ * readfile_chunked
+ * 
+ * read file chunk by chunk
+ * 
+ * @param string $filename
+ * @param boolean $retbytes
+ * @return boolean
+ */
 function readfile_chunked($filename, $retbytes = true) {
     $chunksize = 1 * (1024 * 1024);
     $buffer = '';
