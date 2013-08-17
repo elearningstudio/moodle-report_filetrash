@@ -30,16 +30,16 @@ require_once($CFG->dirroot . '/report/filetrash/form.php');
 
 $cacheid = optional_param('cacheid', $SITE->id, PARAM_INT);
 $confirmdelete = optional_param('confirmdelete', null, PARAM_TEXT);
-
-require_login();
 $context = context_system::instance();
+$PAGE->set_context($context);
+require_login(null, false);
 require_capability('report/filetrash:view', $context);
 
 $filetrash = get_string('pluginname', 'report_filetrash');
 
 session_get_instance()->write_close();
 
-$url = new moodle_url('/report/filetrash/index.php', array('id' => $course->id));
+$url = new moodle_url('/report/filetrash/index.php');
 
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('report');
@@ -47,7 +47,6 @@ $PAGE->set_title($filetrash);
 
 admin_externalpage_setup('reportfiletrash', '', null, '', array('pagelayout' => 'report'));
 echo $OUTPUT->header();
-
 echo $OUTPUT->heading(get_string('pluginname', 'report_filetrash'));
 
 $report = new report_filetrash();
