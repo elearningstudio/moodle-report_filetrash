@@ -30,4 +30,4 @@ $plugin->version   = 2013081400;
 $plugin->requires  = 2013050100;
 $plugin->component = 'report_filetrash';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = 0.9;
+$plugin->release = '0.9 (Build 2013081400)';
