@@ -89,4 +89,5 @@ if ($confirmdelete == 'yes') {
     $form->display();
 }
 
+$PAGE->requires->js_init_call('M.report_filetrash.init');
 echo $OUTPUT->footer();

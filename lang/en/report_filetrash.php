@@ -41,3 +41,4 @@ $string['kb'] = ' KB';
 $string['mb'] = ' MB';
 $string['gb'] = ' GB';
 $string['tb'] = ' TB';
+$string['selectall'] = 'Select All';
