@@ -25,24 +25,6 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-/**
- * This function extends the navigation with the report items
- *
- * @global stdClass $CFG
- * @global core_renderer $OUTPUT
- * @param navigation_node $navigation The navigation node to extend
- * @param stdClass        $course     The course to object for the report
- * @param stdClass        $context    The context of the course
- */
-function report_filetrash_extend_navigation_course($navigation, $course, $context) {
-    global $CFG, $OUTPUT;
-    if (has_capability('report/filetrash:view', $context)) {
-        $url = new moodle_url('/report/filetrash/index.php', array('id' => $course->id));
-        $action = new action_link($url, get_string('pluginname', 'report_filetrash'), new popup_action('click', $url));
-        $navigation->add('', $action, navigation_node::TYPE_SETTING, null, null, new pix_icon('i/report', ''));
-    }
-}
-
 class report_filetrash {
 
     public $dbfiles;
