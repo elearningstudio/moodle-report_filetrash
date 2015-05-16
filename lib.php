@@ -184,7 +184,7 @@ class report_filetrash {
     public function get_orphaned_files() {
         $indexedorphans = array();
         $currentfiles = array_merge($this->directoryfiles, $this->backupfiles);
-        $orphans = array_diff_assoc($currentfiles, $this->dbfiles);
+        $orphans = array_diff_key($currentfiles, $this->dbfiles);
         $i = 0;
         foreach ($orphans as $orphan) {
             $i++;
