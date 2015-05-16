@@ -37,8 +37,6 @@ require_capability('report/filetrash:view', $context);
 
 $filetrash = get_string('pluginname', 'report_filetrash');
 
-session_get_instance()->write_close();
-
 $url = new moodle_url('/report/filetrash/index.php');
 
 $PAGE->set_url($url);
@@ -64,7 +62,7 @@ if ($confirmdelete == 'yes') {
     } else {
         echo html_writer::tag('p', get_string('deleted', 'report_filetrash'));
     }
-    $continueurl = new moodle_url('/report/filetrash/index.php', array('id' => $course->id));
+    $continueurl = new moodle_url('/report/filetrash/index.php');
     $link = html_writer::link($continueurl, get_string('continue'));
     echo html_writer::tag('p', $link);
 } else if ($form->is_submitted()) {
@@ -72,7 +70,6 @@ if ($confirmdelete == 'yes') {
     $cache = $form->store_options($data, $report->orphanedfiles);
     $filestodelete = unserialize($cache->filestodelete);
     $confirmurl = new moodle_url('/report/filetrash/index.php', array(
-        'id' => $course->id,
         'confirmdelete' => 'yes',
         'cacheid' => $cache->id));
     echo html_writer::tag('p', get_string('confirm_delete', 'report_filetrash'));
