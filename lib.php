@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Libs, public API.
- *
- * NOTE: page type not included because there can not be any blocks in popups
- *
+ * File containing report_filetrash class
  * @package    report_filetrash
  * @copyright  2013 Barry Oosthuizen
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Class used for finding orphaned files
+ */
 class report_filetrash {
 
     public $dbfiles;
@@ -32,6 +32,9 @@ class report_filetrash {
     public $backupfiles;
     public $orphanedfiles;
     
+    /**
+     * Class constructor
+     */
     public function __construct() {
 
         $this->dbfiles = $this->get_current_files();
@@ -41,8 +44,6 @@ class report_filetrash {
     }
 
     /**
-     * get_size_format
-     * 
      * Add a size format (e.g. bytes, MB, GB, etc) as suffix
      * 
      * @param type $bytes
@@ -70,8 +71,6 @@ class report_filetrash {
     }
 
     /**
-     * get_files
-     * 
      * Get a list of files within a specific directory and all it's sub directories
      * 
      * @param string $directory
@@ -101,8 +100,6 @@ class report_filetrash {
     }
 
     /**
-     * get_directory_files
-     * 
      * Get a list of files from the moodledata directory
      * 
      * @return array $files
@@ -116,8 +113,6 @@ class report_filetrash {
     }
 
     /**
-     * get_backup_files
-     * 
      * Get a list of files from the backup directory if defined
      * 
      * @return array $files
@@ -137,8 +132,6 @@ class report_filetrash {
     }
 
     /**
-     * get_current_files
-     * 
      * Get a list of files referenced in the files database table
      * 
      * @return array $files
@@ -156,8 +149,6 @@ class report_filetrash {
     }
 
     /**
-     * get_orphaned_files
-     * 
      * Get a list of orpaned files by finding the difference of files in the directory
      * vs files referenced in the database
      * 
