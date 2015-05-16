@@ -51,6 +51,7 @@ class report_filetrash_form extends moodleform {
 
         if ($filecount > 0) {
             $i = 0;
+            $mform->addElement('checkbox', 'selectall', get_string('selectall', 'report_filetrash'));
             foreach ($orphanedfiles as $file) {
                 $i++;
                 $filepath = $file['filepath'];
