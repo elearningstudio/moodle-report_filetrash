@@ -188,6 +188,9 @@ class report_filetrash {
         $i = 0;
         foreach ($orphans as $orphan) {
             $i++;
+            if ($orphan['filename'] == 'warning.txt') {
+                continue;
+            }
             $indexedorphans[$i] = array(
                 'filename' => $orphan['filename'],
                 'filepath' => $orphan['filepath'],
