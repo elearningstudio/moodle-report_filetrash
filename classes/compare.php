@@ -66,15 +66,15 @@ class report_filetrash_compare {
      */
     private function get_size_format($bytes) {
         if ($bytes >= 1073741824) {
-            $bytes = number_format($bytes / 1073741824, 2) . get_string('gb', 'report_filetrash');
+            $bytes =  get_string('gb', 'report_filetrash', number_format($bytes / 1073741824, 2));
         } else if ($bytes >= 1048576) {
-            $bytes = number_format($bytes / 1048576, 2) . get_string('mb', 'report_filetrash');
+            $bytes = get_string('mb', 'report_filetrash', number_format($bytes / 1048576, 2));
         } else if ($bytes >= 1024) {
-            $bytes = number_format($bytes / 1024, 2) . get_string('kb', 'report_filetrash');
+            $bytes = get_string('kb', 'report_filetrash', number_format($bytes / 1024, 2));
         } else if ($bytes > 1) {
-            $bytes = $bytes . get_string('bytes', 'report_filetrash');
+            $bytes = get_string('bytes', 'report_filetrash', $bytes);
         } else if ($bytes == 1) {
-            $bytes = $bytes . get_string('byte', 'report_filetrash');
+            $bytes = get_string('byte', 'report_filetrash', $bytes);
         } else {
             $bytes = '0 bytes';
         }
