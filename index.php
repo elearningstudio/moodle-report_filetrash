@@ -25,7 +25,6 @@
  */
 require_once('../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
-require_once($CFG->dirroot . '/report/filetrash/lib.php');
 require_once($CFG->dirroot . '/report/filetrash/form.php');
 
 $cacheid = optional_param('cacheid', $SITE->id, PARAM_INT);
@@ -47,7 +46,7 @@ admin_externalpage_setup('reportfiletrash', '', null, '', array('pagelayout' => 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('pluginname', 'report_filetrash'));
 
-$report = new report_filetrash();
+$report = new report_filetrash_compare();
 
 $customdata = array('orphanedfiles' => $report->orphanedfiles);
 $form = new report_filetrash_form(null, $customdata);

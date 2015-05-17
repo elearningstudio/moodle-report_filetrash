@@ -33,9 +33,10 @@ require_once($CFG->libdir . '/formslib.php');
  */
 class report_filetrash_form extends moodleform {
 
+    /** 
+     * Form definition
+     */
     public function definition() {
-
-        global $CFG, $DB, $COURSE;
 
         $mform = & $this->_form;
         $orphanedfiles = $this->_customdata['orphanedfiles'];
