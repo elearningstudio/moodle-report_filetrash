@@ -75,6 +75,9 @@ if ($confirmdelete == 'yes') {
     echo html_writer::tag('p', get_string('confirm_delete', 'report_filetrash'));
     $i = 0;
     foreach ($filestodelete as $key => $file) {
+        if ($file == '/') {
+            continue;
+        }
         $i++;
         echo html_writer::tag('p', $i . '. ' . $file);
 

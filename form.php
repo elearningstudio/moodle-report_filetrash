@@ -90,7 +90,7 @@ class report_filetrash_form extends moodleform {
         $filestodelete = array();
 
         foreach ($markedfiles as $file => $todelete) {
-            if ($file !== 'submit') {
+            if ($file !== 'submit' && $file !== 'selectall') {
                 $filestodelete[] = substr($file, 7);
             }
         }
