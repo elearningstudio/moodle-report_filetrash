@@ -24,16 +24,28 @@ defined('MOODLE_INTERNAL') || die;
 
 /**
  * Class used for finding orphaned files
+ * @package    report_filetrash
+ * @copyright  2013 onwards, Barry Oosthuizen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class report_filetrash_compare {
 
-    /** Unique DB files by contenthash */
+    /** Unique DB files by contenthash
+     * @var array
+     */
     public $dbfiles;
-    /** Unique directory files by filename */
+    /**
+     * Unique directory files by filename
+     * @var array
+     */
     public $directoryfiles;
-    /** Unique backup files by filename */
+    /** Unique backup files by filename
+     * @var array
+     */
     public $backupfiles;
-    /** Array of orphaned files */
+    /** Array of orphaned files
+     * @var array
+     */
     public $orphanedfiles;
 
     /**
@@ -172,4 +184,34 @@ class report_filetrash_compare {
         return $indexedorphans;
     }
 
+    /**
+     * Read file chunk by chunk
+     * 
+     * @param string $filename
+     * @param boolean $retbytes
+     * @return boolean
+     */
+    public static function readfile_chunked($filename, $retbytes = true) {
+        $chunksize = 1 * (1024 * 1024);
+        $buffer = '';
+        $cnt = 0;
+        $handle = fopen($filename, 'rb');
+        if ($handle === false) {
+            return false;
+        }
+        while (!feof($handle)) {
+            $buffer = fread($handle, $chunksize);
+            echo $buffer;
+            ob_flush();
+            flush();
+            if ($retbytes) {
+                $cnt += strlen($buffer);
+            }
+        }
+        $status = fclose($handle);
+        if ($retbytes && $status) {
+            return $cnt;
+        }
+        return $status;
+    }
 }

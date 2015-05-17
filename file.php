@@ -14,8 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * File containing report_filetrash class
+ * @package    report_filetrash
+ * @copyright  2013 Barry Oosthuizen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once('../../config.php');
-require_once($CFG->dirroot . '/report/filetrash/lib.php');
 
 $filename = optional_param('filename', '0', PARAM_TEXT);
 $filepath = optional_param('filepath', '0', PARAM_TEXT);
@@ -42,37 +47,4 @@ header('Content-Length: ' . filesize($path));
 header("Cache-Control: private");
 
 header("Content-Disposition: attachment; filename=" . $filename);
-readfile_chunked($path);
-
-/**
- * readfile_chunked
- * 
- * read file chunk by chunk
- * 
- * @param string $filename
- * @param boolean $retbytes
- * @return boolean
- */
-function readfile_chunked($filename, $retbytes = true) {
-    $chunksize = 1 * (1024 * 1024);
-    $buffer = '';
-    $cnt = 0;
-    $handle = fopen($filename, 'rb');
-    if ($handle === false) {
-        return false;
-    }
-    while (!feof($handle)) {
-        $buffer = fread($handle, $chunksize);
-        echo $buffer;
-        ob_flush();
-        flush();
-        if ($retbytes) {
-            $cnt += strlen($buffer);
-        }
-    }
-    $status = fclose($handle);
-    if ($retbytes && $status) {
-        return $cnt;
-    }
-    return $status;
-}
+report_filetrash_compare::readfile_chunked($path);
