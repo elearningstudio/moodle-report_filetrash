@@ -35,6 +35,7 @@ $PAGE->set_context($context);
 require_login(null, false);
 
 require_capability('report/filetrash:view', $context);
+raise_memory_limit(MEMORY_HUGE);
 
 $filetrash = get_string('pluginname', 'report_filetrash');
 
