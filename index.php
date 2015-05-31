@@ -35,6 +35,11 @@ require_login(null, false);
 require_capability('report/filetrash:view', $context);
 raise_memory_limit(MEMORY_HUGE);
 
+if ($confirmdelete) {
+    $deleteurl = new moodle_url('/report/filetrash/delete.php', array('confirmdelete' => $confirmdelete));
+    redirect($deleteurl);
+}
+
 $filetrash = get_string('pluginname', 'report_filetrash');
 
 $url = new moodle_url('/report/filetrash/index.php');
@@ -42,7 +47,6 @@ $url = new moodle_url('/report/filetrash/index.php');
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('report');
 $PAGE->set_title($filetrash);
-
 admin_externalpage_setup('reportfiletrash', '', null, '', array('pagelayout' => 'report'));
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('pluginname', 'report_filetrash'));
@@ -52,25 +56,12 @@ $report = new report_filetrash_compare();
 $customdata = array('orphanedfiles' => $report->orphanedfiles);
 $form = new report_filetrash_form(null, $customdata);
 
-if ($confirmdelete == 'yes') {
-    $errors = $form->process($cacheid);
-    if (count($errors) > 0) {
-        echo html_writer::tag('p', get_string('deletedfailed', 'report_filetrash'));
-        foreach ($errors as $key => $error) {
-            echo html_writer::tag('p', $error);
-        }
-    } else {
-        echo html_writer::tag('p', get_string('deleted', 'report_filetrash'));
-    }
-    $continueurl = new moodle_url('/report/filetrash/index.php');
-    $link = html_writer::link($continueurl, get_string('continue'));
-    echo html_writer::tag('p', $link);
-} else if ($form->is_submitted()) {
+if ($form->is_submitted()) {
     $data = $form->get_data();
     $cache = $form->store_options($data, $report->orphanedfiles);
     $filestodelete = unserialize($cache->filestodelete);
     $confirmurl = new moodle_url('/report/filetrash/index.php', array(
-        'confirmdelete' => 'yes',
+        'confirmdelete' => true,
         'cacheid' => $cache->id));
     echo html_writer::tag('p', get_string('confirm_delete', 'report_filetrash'));
     $i = 0;
@@ -80,12 +71,12 @@ if ($confirmdelete == 'yes') {
         }
         $i++;
         echo html_writer::tag('p', $i . '. ' . $file);
-
     }
     echo html_writer::link($confirmurl, get_string('delete'));
 
 } else {
     $form->display();
+    $PAGE->requires->js_init_call('M.report_filetrash.init');
 }
-$PAGE->requires->js_init_call('M.report_filetrash.init');
+
 echo $OUTPUT->footer();

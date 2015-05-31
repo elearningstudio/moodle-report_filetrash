@@ -93,12 +93,16 @@ class report_filetrash_form extends moodleform {
         foreach ($markedfiles as $file => $todelete) {
             if ($file !== 'submit' && $file !== 'selectall') {
                 $filestodelete[] = substr($file, 7);
-            }
+}
         }
         $files = array();
 
-        foreach ($filestodelete as $delete) {
-            $key = $indexedfiles[$delete];
+        foreach ($filestodelete as $key => $file) {
+            if (empty($file)) {
+                unset($filestodelete[$key]);
+                continue;
+            }
+            $key = $indexedfiles[$file];
             $filename = $key['filename'];
             $filepath = $key['filepath'];
             $path = $filepath . '/' . $filename;
@@ -116,37 +120,4 @@ class report_filetrash_form extends moodleform {
         $success->filestodelete = $serializedfiles;
         return $success;
     }
-
-    /**
-     * process
-     * 
-     * Delete selected files form their directories
-     * 
-     * @param string $id id field from options stored in the database
-     * @return array $errors list of files that failed to be deleted
-     */
-    public function process($id) {
-        global $DB, $USER;
-
-        $sesskey = sesskey();
-
-        $cachedrecord = $DB->get_record('report_filetrash', array(
-            'userid' => $USER->id,
-            'sessionid' => $sesskey,
-            'deleted' => 0,
-            'id' => $id));
-
-        $filestodelete = unserialize($cachedrecord->filestodelete);
-        $errors = array();
-        foreach ($filestodelete as $key => $path) {
-            $deleted = unlink($path);
-            if (!$deleted) {
-                $errors[] = $path;
-            }
-        }
-        $cachedrecord->deleted = 1;
-        $DB->update_record('report_filetrash', $cachedrecord);
-        return $errors;
-    }
-
 }
