@@ -26,7 +26,6 @@
 require_once('../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
-$cacheid = optional_param('cacheid', $SITE->id, PARAM_INT);
 $confirmdelete = optional_param('confirmdelete', false, PARAM_BOOL);
 $context = context_system::instance();
 $PAGE->set_context($context);
