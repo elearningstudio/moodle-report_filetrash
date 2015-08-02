@@ -42,3 +42,5 @@ $string['mb'] = '{$a} MB';
 $string['gb'] = '{$a} GB';
 $string['tb'] = '{$a} TB';
 $string['selectall'] = 'Select All';
+$string['showfileinfo'] = 'Show file extensions in report?';
+$string['showfileinfo_desc'] = 'This will slow down the report and may cause a timeout';

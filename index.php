@@ -46,7 +46,6 @@ $url = new moodle_url('/report/filetrash/index.php');
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('report');
 $PAGE->set_title($filetrash);
-admin_externalpage_setup('reportfiletrash', '', null, '', array('pagelayout' => 'report'));
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('pluginname', 'report_filetrash'));
 

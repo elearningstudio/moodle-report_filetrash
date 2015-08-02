@@ -98,17 +98,34 @@ class report_filetrash_compare {
                 $path = (string) $fileinfo->getPath();
                 $bytes = (string) $fileinfo->getSize();
                 $size = $this->get_size_format($bytes);
-                $pathfile = glob($path . '/' . $file);
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $mime = (string)finfo_file($finfo, $pathfile[0]);
-                $filenames[$file] = array(
-                    'filename' => $file,
-                    'filepath' => $path,
-                    'filesize' => $size,
-                    'extension' => $mime);
+                $mime = $this->get_mime_type($file, $path);
+
+            $filenames[$file] = array(
+                'filename' => $file,
+                'filepath' => $path,
+                'filesize' => $size,
+                'extension' => $mime);
             }
         }
         return $filenames;
+    }
+
+    /**
+     * Get the mime type for this file
+     * 
+     * @param string $file
+     * @param string $path
+     */
+    private function get_mime_type($file, $path) {
+        $showmimetype = get_config('report_filetrash', 'showfileinfo');
+
+        if ($showmimetype) {
+            $pathfile = glob($path . '/' . $file);
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = (string)finfo_file($finfo, $pathfile[0]);
+            return $mime;
+        }
+        return '';
     }
 
     /**
@@ -186,7 +203,7 @@ class report_filetrash_compare {
 
     /**
      * Read file chunk by chunk
-     * 
+     *
      * @param string $filename
      * @param boolean $retbytes
      * @return boolean

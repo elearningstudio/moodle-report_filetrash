@@ -62,7 +62,11 @@ class report_filetrash_form extends moodleform {
                 $filelink = html_writer::link($link, $filename);
                 $header = html_writer::div($directory . $filepath);
                 $body = html_writer::div($name . $filelink);
-                $extensiondetails = html_writer::div($extensionheader . $extension);
+                if (empty($extension)) {
+                    $extensiondetails = '';
+                } else {
+                    $extensiondetails = html_writer::div($extensionheader . $extension);
+                }
                 $footer = html_writer::div($size . $filesize);
                 $filedetails = html_writer::div($header . $body . $extensiondetails . $footer, 'filetrashdetails');
 

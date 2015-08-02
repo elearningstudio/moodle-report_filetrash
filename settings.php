@@ -26,8 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$ADMIN->add('reports', new admin_externalpage('reportfiletrash',
-        get_string('pluginname', 'report_filetrash'),
-        "$CFG->wwwroot/report/filetrash/index.php", 'report/filetrash:view'));
+if ($hassiteconfig) {
 
-$settings = null;
+    $settings->add(new admin_setting_configcheckbox('report_filetrash/showfileinfo',
+            get_string('showfileinfo', 'report_filetrash'), get_string('showfileinfo_desc', 'report_filetrash'), '0'));
+}
