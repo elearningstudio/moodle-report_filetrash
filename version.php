@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2015060100;
+$plugin->version   = 2015080201;
 $plugin->requires  = 2013111800;
 $plugin->component = 'report_filetrash';
 $plugin->maturity = MATURITY_STABLE;
