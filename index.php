@@ -28,6 +28,9 @@ require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot . '/report/filetrash/form.php');
 
 $confirmdelete = optional_param('confirmdelete', null, PARAM_TEXT);
+
+admin_externalpage_setup('report_filetrash', '', null, '', array('pagelayout'=>'report'));
+
 $context = context_system::instance();
 $PAGE->set_context($context);
 require_login(null, false);

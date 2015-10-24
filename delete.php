@@ -44,7 +44,6 @@ if ($confirmdelete) {
     $PAGE->set_pagelayout('report');
     $PAGE->set_title($filetrash);
 
-    admin_externalpage_setup('reportfiletrash', '', null, '', array('pagelayout' => 'report'));
     echo $OUTPUT->header();
     echo $OUTPUT->heading(get_string('pluginname', 'report_filetrash'));
     $files = new report_filetrash_files();
