@@ -183,7 +183,14 @@ class report_filetrash_compare {
      */
     private function get_orphaned_files() {
         $indexedorphans = array();
-        $currentfiles = array_merge($this->directoryfiles, $this->backupfiles);
+
+        $ignoreautomatedbackupfolder = get_config('report_filetrash', 'ignoreautomatedbackupfolder');
+        if (empty($ignoreautomatedbackupfolder)) {
+            $currentfiles = array_merge($this->directoryfiles, $this->backupfiles);
+        } else {
+            $currentfiles = $this->directoryfiles;
+        }
+
         $orphans = array_diff_key($currentfiles, $this->dbfiles);
         $i = 0;
         foreach ($orphans as $orphan) {

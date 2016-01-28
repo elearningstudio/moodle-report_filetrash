@@ -32,4 +32,7 @@ if ($hassiteconfig) {
 
     $settings->add(new admin_setting_configcheckbox('report_filetrash/showfileinfo',
             get_string('showfileinfo', 'report_filetrash'), get_string('showfileinfo_desc', 'report_filetrash'), '0'));
+
+    $settings->add(new admin_setting_configcheckbox('report_filetrash/ignoreautomatedbackupfolder',
+        get_string('ignoreautomatedbackupfolder', 'report_filetrash'), get_string('ignoreautomatedbackupfolder_desc', 'report_filetrash'), '0'));
 }
