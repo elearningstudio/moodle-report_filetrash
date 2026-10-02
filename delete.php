@@ -31,6 +31,7 @@ $context = context_system::instance();
 $PAGE->set_context($context);
 require_login(null, false);
 require_capability('report/filetrash:view', $context);
+require_sesskey();
 raise_memory_limit(MEMORY_HUGE);
 
 $filetrash = get_string('pluginname', 'report_filetrash');

@@ -30,10 +30,10 @@ require_login();
 $context = context_system::instance();
 require_capability('report/filetrash:view', $context);
 
-$path = $filepath . '/' . $filename;
+$base = realpath($CFG->dataroot);
+$path = realpath($filepath . '/' . $filename);
 
-if (!is_file($path)) {
-    // File does not exist.
+if ($path === false || strpos($path, $base . DIRECTORY_SEPARATOR) !== 0 || !is_file($path)) {
     echo get_string('doesnotexist', 'report_filetrash');
     exit();
 }
