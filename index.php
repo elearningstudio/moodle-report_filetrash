@@ -38,8 +38,15 @@ require_capability('report/filetrash:view', $context);
 raise_memory_limit(MEMORY_HUGE);
 
 if ($confirmdelete) {
-    $deleteurl = new moodle_url('/report/filetrash/delete.php', array('confirmdelete' => $confirmdelete));
+    require_sesskey();
+    $deleteurl = new moodle_url('/report/filetrash/delete.php', ['confirmdelete' => $confirmdelete, 'sesskey' => sesskey()]);
     redirect($deleteurl);
+} else {
+    // Delete old records to avoid duplicate 'todelete' records, breaking delete flow.
+    $deleteparams = ['userid' => $USER->id, 'sessionid' => sesskey()];
+    if ($DB->record_exists('report_filetrash', $deleteparams)) {
+        $DB->delete_records('report_filetrash', $deleteparams);
+    }
 }
 
 $filetrash = get_string('pluginname', 'report_filetrash');
@@ -63,7 +70,9 @@ if ($form->is_submitted()) {
     $filestodelete = unserialize($cache->filestodelete);
     $confirmurl = new moodle_url('/report/filetrash/index.php', array(
         'confirmdelete' => true,
-        'cacheid' => $cache->id));
+        'cacheid' => $cache->id,
+        'sesskey' => sesskey(),
+    ));
     echo html_writer::tag('p', get_string('confirm_delete', 'report_filetrash'));
     $i = 0;
     foreach ($filestodelete as $key => $file) {
