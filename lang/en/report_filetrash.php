@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['filtetrash:view'] = 'View the file trash report';
+$string['filetrash:view'] = 'View the file trash report';
 $string['pluginname'] = 'File trash';
 $string['doesnotexist'] = 'This file does not exist.';
 $string['confirm_delete'] = 'Are you sure you want to delete the file(s) listed below?';
